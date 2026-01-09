@@ -64,7 +64,7 @@
                 </button>
             </form>
 
-            <div id="result" class="mt-10"></div>
+            <div id="result" class="mt-10 text-green-400"></div>
         </section>
 
         <!-- HOW -->
@@ -170,6 +170,21 @@ pasteBtn.addEventListener('click', async () => {
     } catch {
         alert('Clipboard not supported.');
     }
+});
+
+/* ---------- DOWNLOAD ---------- */
+downloadForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const url = instaUrl.value.trim();
+    if (!url) return;
+
+    // Dummy result
+    result.innerHTML = `
+        <div class="bg-gray-700 p-4 rounded mt-4">
+            Media ready to download: <strong>${url}</strong>
+        </div>
+    `;
+    instaUrl.value = '';
 });
 </script>
 
