@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram Downloader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[#0f0f0f] text-gray-200 min-h-screen flex flex-col">
+
+<!-- ================= HEADER ================= -->
+<header class="bg-[#151515] border-b border-gray-800">
+    <div class="container mx-auto flex flex-col md:flex-row items-center justify-between py-6 px-4">
+        <h1 id="titleText" class="text-2xl font-bold text-green-400">
+            Instagram Downloader
+        </h1>
+
+        <nav class="flex gap-4 items-center text-gray-400 font-medium mt-3 md:mt-0">
+            <a href="#" class="nav-link hover:text-green-400" data-page="home" id="navHome">Home</a>
+            <a href="#" class="nav-link hover:text-green-400" data-page="how" id="navHow">How to Use</a>
+            <a href="#" class="nav-link hover:text-green-400" data-page="about" id="navAbout">About</a>
+
+            <select id="langSelector"
+                class="ml-4 bg-[#0f0f0f] border border-gray-700 rounded-lg px-2 py-1 text-gray-300">
+                <option value="en">English</option>
+                <option value="id">Indonesia</option>
+            </select>
+        </nav>
+    </div>
+</header>
+
+<!-- ================= MAIN ================= -->
+<main class="container mx-auto flex-1 px-4 py-10">
+    <div class="bg-[#151515] p-8 rounded-2xl shadow-xl max-w-2xl mx-auto border border-gray-800">
+
+        <!-- HOME -->
+        <section id="page-home" class="page">
+            <p id="subtitle" class="text-gray-400 text-center mb-8">
+                Paste your Instagram link and download media instantly.
+            </p>
+
+            <form id="downloadForm" class="flex flex-col md:flex-row gap-4">
+                <div class="flex flex-1">
+                    <input
+                        type="text"
+                        id="instaUrl"
+                        placeholder="Paste Instagram link..."
+                        required
+                        class="flex-1 bg-[#0f0f0f] border border-gray-700 rounded-l-lg px-4 py-3 text-gray-200 outline-none"
+                    >
+                    <button
+                        type="button"
+                        id="pasteBtn"
+                        class="border border-l-0 border-gray-700 px-4 rounded-r-lg bg-[#1f1f1f] hover:bg-[#2a2a2a] text-gray-300">
+                        Paste
+                    </button>
+                </div>
+
+                <button
+                    type="submit"
+                    id="downloadBtn"
+                    class="bg-green-500 text-black px-6 py-3 rounded-lg font-semibold hover:bg-green-400">
+                    Download
+                </button>
+            </form>
+
+            <div id="result" class="mt-10"></div>
+        </section>
+
+        <!-- HOW -->
+        <section id="page-how" class="page hidden">
+            <h2 id="howTitle" class="text-xl font-bold mb-4 text-green-400">
+                How to Use
+            </h2>
+            <ol id="howList" class="list-decimal list-inside space-y-2 text-gray-400">
+                <li>Copy Instagram post / reel / carousel link</li>
+                <li>Paste link into input field</li>
+                <li>Click Download</li>
+                <li>Preview and download media</li>
+            </ol>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="page-about" class="page hidden">
+            <h2 id="aboutTitle" class="text-xl font-bold mb-4 text-green-400">
+                About
+            </h2>
+            <p id="aboutText" class="text-gray-400 mb-2">
+                Simple Instagram Downloader powered by Cobalt API.
+            </p>
+            <p class="text-sm text-gray-600">
+                Only public Instagram content is supported.
+            </p>
+        </section>
+
+    </div>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-[#151515] border-t border-gray-800">
+    <div class="container mx-auto py-4 text-center text-gray-500 text-sm">
+        © 2026 Instagram Downloader
+    </div>
+</footer>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+/* ---------- NAV ---------- */
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+        document.getElementById('page-' + link.dataset.page).classList.remove('hidden');
+    });
+});
+
+/* ---------- TRANSLATION ---------- */
+const i18n = {
+    en: {
+        title: "Instagram Downloader",
+        home: "Home",
+        how: "How to Use",
+        about: "About",
+        subtitle: "Paste your Instagram link and download media instantly.",
+        download: "Download",
+        paste: "Paste",
+        howSteps: [
+            "Copy Instagram post / reel / carousel link",
+            "Paste link into input field",
+            "Click Download",
+            "Preview and download media"
+        ],
+        aboutText: "Simple Instagram Downloader powered by Cobalt API."
+    },
+    id: {
+        title: "Pengunduh Instagram",
+        home: "Beranda",
+        how: "Cara Pakai",
+        about: "Tentang",
+        subtitle: "Tempel link Instagram dan unduh media secara instan.",
+        download: "Unduh",
+        paste: "Tempel",
+        howSteps: [
+            "Salin link postingan / reel / carousel Instagram",
+            "Tempel link ke kolom input",
+            "Klik Unduh",
+            "Pratinjau dan unduh media"
+        ],
+        aboutText: "Aplikasi pengunduh Instagram berbasis Cobalt API."
+    }
+};
+
+langSelector.addEventListener('change', e => {
+    const t = i18n[e.target.value];
+    titleText.innerText = t.title;
+    navHome.innerText = t.home;
+    navHow.innerText = t.how;
+    navAbout.innerText = t.about;
+    subtitle.innerText = t.subtitle;
+    downloadBtn.innerText = t.download;
+    pasteBtn.innerText = t.paste;
+    aboutText.innerText = t.aboutText;
+    howList.innerHTML = t.howSteps.map(s => `<li>${s}</li>`).join('');
+});
+
+/* ---------- PASTE ---------- */
+pasteBtn.addEventListener('click', async () => {
+    try {
+        instaUrl.value = await navigator.clipboard.readText();
+    } catch {
+        alert('Clipboard not supported.');
+    }
+});
+</script>
+
+</body>
+</html>
