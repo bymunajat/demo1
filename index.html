@@ -2,191 +2,327 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Instagram Downloader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySeoFan - Download Instagram</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .card-white {
+            background: white;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Animated gradient border for input */
+        #instaUrl {
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea) border-box;
+            border: 3px solid transparent;
+            animation: gradient-rotate 3s linear infinite;
+            background-size: 300% 300%;
+        }
+        
+        @keyframes gradient-rotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        #instaUrl:focus {
+            animation: gradient-rotate 1.5s linear infinite;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+    </style>
 </head>
+<body class="text-white min-h-screen">
 
-<body class="bg-[#0f0f0f] text-gray-200 min-h-screen flex flex-col">
-
-<!-- ================= HEADER ================= -->
-<header class="bg-[#151515] border-b border-gray-800">
-    <div class="container mx-auto flex flex-col md:flex-row items-center justify-between py-6 px-4">
-        <h1 id="titleText" class="text-2xl font-bold text-green-400">
-            Instagram Downloader
-        </h1>
-
-        <nav class="flex gap-4 items-center text-gray-400 font-medium mt-3 md:mt-0">
-            <a href="#" class="nav-link hover:text-green-400" data-page="home" id="navHome">Home</a>
-            <a href="#" class="nav-link hover:text-green-400" data-page="how" id="navHow">How to Use</a>
-            <a href="#" class="nav-link hover:text-green-400" data-page="about" id="navAbout">About</a>
-
-            <select id="langSelector"
-                class="ml-4 bg-[#0f0f0f] border border-gray-700 rounded-lg px-2 py-1 text-gray-300">
-                <option value="en">English</option>
-                <option value="id">Indonesia</option>
-            </select>
-        </nav>
+<!-- Header -->
+<header class="glass">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold">MySeoFan</h1>
+            </div>
+            
+            <div class="flex items-center gap-6 text-sm">
+                <a href="#faq" class="hover:text-white/80">FAQ</a>
+                <select id="langSelector" class="glass rounded-lg px-3 py-1.5 text-sm outline-none">
+                    <option value="en">EN</option>
+                    <option value="id">ID</option>
+                </select>
+            </div>
+        </div>
     </div>
 </header>
 
-<!-- ================= MAIN ================= -->
-<main class="container mx-auto flex-1 px-4 py-10">
-    <div class="bg-[#151515] p-8 rounded-2xl shadow-xl max-w-2xl mx-auto border border-gray-800">
-
-        <!-- HOME -->
-        <section id="page-home" class="page">
-            <p id="subtitle" class="text-gray-400 text-center mb-8">
-                Paste your Instagram link and download media instantly.
+<!-- Main -->
+<main class="container mx-auto px-4 py-12">
+    
+    <section class="max-w-5xl mx-auto">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">
+                Download Instagram Content<br>In Seconds - 100% Free
+            </h2>
+            <p class="text-lg text-white/90">
+                Save any Instagram video, photo, reel or IGTV instantly
             </p>
+        </div>
 
-            <form id="downloadForm" class="flex flex-col md:flex-row gap-4">
-                <div class="flex flex-1">
+        <!-- Button Categories -->
+        <div class="flex flex-wrap gap-3 justify-center mb-6">
+            <button type="button" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+                Download Video
+            </button>
+            <button type="button" class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+                Download Photo
+            </button>
+            <button type="button" class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+                Download Reels
+            </button>
+            <button type="button" class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+                Download IGTV
+            </button>
+        </div>
+
+        <!-- Download Box -->
+        <div class="card-white rounded-3xl p-6 md:p-10 mb-12">
+            <form id="downloadForm" class="flex flex-col md:flex-row gap-3">
+                <div class="flex-1 relative">
                     <input
                         type="text"
                         id="instaUrl"
-                        placeholder="Paste Instagram link..."
-                        required
-                        class="flex-1 bg-[#0f0f0f] border border-gray-700 rounded-l-lg px-4 py-3 text-gray-200 outline-none"
+                        placeholder="Paste your Instagram link here"
+                        class="w-full px-4 py-4 text-gray-800 outline-none rounded-xl"
                     >
-                    <button
-                        type="button"
-                        id="pasteBtn"
-                        class="border border-l-0 border-gray-700 px-4 rounded-r-lg bg-[#1f1f1f] hover:bg-[#2a2a2a] text-gray-300">
-                        Paste
-                    </button>
                 </div>
-
+                <button
+                    type="button"
+                    id="pasteBtn"
+                    class="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                    📋 Paste
+                </button>
                 <button
                     type="submit"
-                    id="downloadBtn"
-                    class="bg-green-500 text-black px-6 py-3 rounded-lg font-semibold hover:bg-green-400">
+                    class="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-10 py-4 rounded-xl font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
                     Download
                 </button>
             </form>
+        </div>
 
-            <div id="result" class="mt-10 text-green-400"></div>
-        </section>
+        <div id="result"></div>
 
-        <!-- HOW -->
-        <section id="page-how" class="page hidden">
-            <h2 id="howTitle" class="text-xl font-bold mb-4 text-green-400">
-                How to Use
-            </h2>
-            <ol id="howList" class="list-decimal list-inside space-y-2 text-gray-400">
-                <li>Copy Instagram post / reel / carousel link</li>
-                <li>Paste link into input field</li>
-                <li>Click Download</li>
-                <li>Preview and download media</li>
-            </ol>
-        </section>
+        <!-- Info Cards -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            <div class="card-white rounded-2xl p-8 text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-3xl">⚡</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Super Fast Download</h3>
+                <p class="text-gray-600 text-sm">
+                    Download process in just seconds. Save your time with maximum download speed without any interruptions.
+                </p>
+            </div>
 
-        <!-- ABOUT -->
-        <section id="page-about" class="page hidden">
-            <h2 id="aboutTitle" class="text-xl font-bold mb-4 text-green-400">
-                About
-            </h2>
-            <p id="aboutText" class="text-gray-400 mb-2">
-                Simple Instagram Downloader powered by Cobalt API.
-            </p>
-            <p class="text-sm text-gray-600">
-                Only public Instagram content is supported.
-            </p>
-        </section>
+            <div class="card-white rounded-2xl p-8 text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-3xl">🎨</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">No Watermark</h3>
+                <p class="text-gray-600 text-sm">
+                    All videos and photos are downloaded without watermarks or logos. Get pure content in its original quality.
+                </p>
+            </div>
 
-    </div>
+            <div class="card-white rounded-2xl p-8 text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-3xl">🔒</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">100% Safe & Private</h3>
+                <p class="text-gray-600 text-sm">
+                    No login or personal data required. Your privacy is protected and the download process is completely safe.
+                </p>
+            </div>
+        </div>
+
+        <!-- Steps -->
+        <div class="mb-12">
+            <h3 class="text-3xl font-bold text-center mb-8">How to Download from Instagram</h3>
+            <p class="text-center text-white/90 mb-8">3 easy steps to download Instagram videos and photos</p>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-5xl mb-4">📋</div>
+                    <h4 class="text-xl font-bold mb-3">Copy URL</h4>
+                    <p class="text-sm text-white/80">
+                        Open Instagram app and copy the URL link of the video, photo, reels, IGTV or carousel you want to download.
+                    </p>
+                </div>
+
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-5xl mb-4">✂️</div>
+                    <h4 class="text-xl font-bold mb-3">Paste Link</h4>
+                    <p class="text-sm text-white/80">
+                        Paste the copied link into the input field above and click the download button.
+                    </p>
+                </div>
+
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-5xl mb-4">💾</div>
+                    <h4 class="text-xl font-bold mb-3">Download</h4>
+                    <p class="text-sm text-white/80">
+                        Wait a few moments until the process is complete, then click the download button to save.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div id="faq" class="mb-12">
+            <h3 class="text-3xl font-bold text-center mb-8">Frequently Asked Questions (FAQ)</h3>
+            
+            <div class="space-y-4">
+                <div class="glass rounded-2xl p-6">
+                    <h4 class="text-xl font-bold mb-3">❓ Is MySeoFan free?</h4>
+                    <p class="text-white/80">Yes, MySeoFan is 100% free to download videos, photos, reels, and IGTV from Instagram without any limitations.</p>
+                </div>
+
+                <div class="glass rounded-2xl p-6">
+                    <h4 class="text-xl font-bold mb-3">❓ Do I need to install an app?</h4>
+                    <p class="text-white/80">No need! MySeoFan is a web-based application that can be accessed directly from your browser without any installation.</p>
+                </div>
+
+                <div class="glass rounded-2xl p-6">
+                    <h4 class="text-xl font-bold mb-3">❓ Do downloaded files have watermarks?</h4>
+                    <p class="text-white/80">No, all downloaded videos and photos have no watermarks and are in their original quality.</p>
+                </div>
+
+                <div class="glass rounded-2xl p-6">
+                    <h4 class="text-xl font-bold mb-3">❓ Can I download Instagram Stories?</h4>
+                    <p class="text-white/80">Yes, MySeoFan supports downloading Instagram Stories, as long as the account is public.</p>
+                </div>
+
+                <div class="glass rounded-2xl p-6">
+                    <h4 class="text-xl font-bold mb-3">❓ Is it safe to use?</h4>
+                    <p class="text-white/80">Absolutely safe! MySeoFan does not store your personal data and does not require Instagram login.</p>
+                </div>
+
+                <div class="glass rounded-2xl p-6">
+                    <h4 class="text-xl font-bold mb-3">❓ Why does the download fail?</h4>
+                    <p class="text-white/80">Make sure the Instagram account is public and the link you entered is correct. Private accounts cannot be downloaded.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </main>
 
-<!-- ================= FOOTER ================= -->
-<footer class="bg-[#151515] border-t border-gray-800">
-    <div class="container mx-auto py-4 text-center text-gray-500 text-sm">
-        © 2026 Instagram Downloader
+<!-- Footer -->
+<footer class="glass mt-12">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <span class="font-bold">MySeoFan</span>
+            </div>
+            
+            <div class="text-sm text-white/80">
+                © 2026 MySeoFan - Instagram Downloader
+            </div>
+            
+            <div class="flex gap-3">
+                <a href="#" class="w-9 h-9 glass rounded-full flex items-center justify-center hover:bg-white/20 transition">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path></svg>
+                </a>
+                <a href="#" class="w-9 h-9 glass rounded-full flex items-center justify-center hover:bg-white/20 transition">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path></svg>
+                </a>
+                <a href="#" class="w-9 h-9 glass rounded-full flex items-center justify-center hover:bg-white/20 transition">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"></path></svg>
+                </a>
+            </div>
+        </div>
     </div>
 </footer>
 
-<!-- ================= SCRIPT ================= -->
 <script>
-/* ---------- NAV ---------- */
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', e => {
-        e.preventDefault();
-        document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-        document.getElementById('page-' + link.dataset.page).classList.remove('hidden');
-    });
-});
-
-/* ---------- TRANSLATION ---------- */
-const i18n = {
-    en: {
-        title: "Instagram Downloader",
-        home: "Home",
-        how: "How to Use",
-        about: "About",
-        subtitle: "Paste your Instagram link and download media instantly.",
-        download: "Download",
-        paste: "Paste",
-        howSteps: [
-            "Copy Instagram post / reel / carousel link",
-            "Paste link into input field",
-            "Click Download",
-            "Preview and download media"
-        ],
-        aboutText: "Simple Instagram Downloader powered by Cobalt API."
-    },
-    id: {
-        title: "Pengunduh Instagram",
-        home: "Beranda",
-        how: "Cara Pakai",
-        about: "Tentang",
-        subtitle: "Tempel link Instagram dan unduh media secara instan.",
-        download: "Unduh",
-        paste: "Tempel",
-        howSteps: [
-            "Salin link postingan / reel / carousel Instagram",
-            "Tempel link ke kolom input",
-            "Klik Unduh",
-            "Pratinjau dan unduh media"
-        ],
-        aboutText: "Aplikasi pengunduh Instagram berbasis Cobalt API."
-    }
-};
-
-langSelector.addEventListener('change', e => {
-    const t = i18n[e.target.value];
-    titleText.innerText = t.title;
-    navHome.innerText = t.home;
-    navHow.innerText = t.how;
-    navAbout.innerText = t.about;
-    subtitle.innerText = t.subtitle;
-    downloadBtn.innerText = t.download;
-    pasteBtn.innerText = t.paste;
-    aboutText.innerText = t.aboutText;
-    howList.innerHTML = t.howSteps.map(s => `<li>${s}</li>`).join('');
-});
-
-/* ---------- PASTE ---------- */
+// Paste button
 pasteBtn.addEventListener('click', async () => {
     try {
-        instaUrl.value = await navigator.clipboard.readText();
-    } catch {
-        alert('Clipboard not supported.');
+        const text = await navigator.clipboard.readText();
+        instaUrl.value = text;
+    } catch (err) {
+        alert('Cannot access clipboard. Please paste manually.');
     }
 });
 
-/* ---------- DOWNLOAD ---------- */
+// Download form
 downloadForm.addEventListener('submit', e => {
     e.preventDefault();
     const url = instaUrl.value.trim();
-    if (!url) return;
+    if (!url) {
+        alert('Please enter an Instagram link first!');
+        return;
+    }
 
-    // Dummy result
     result.innerHTML = `
-        <div class="bg-gray-700 p-4 rounded mt-4">
-            Media ready to download: <strong>${url}</strong>
+        <div class="card-white rounded-2xl p-6 animate-bounce-in">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800">Processing...</h4>
+                    <p class="text-sm text-gray-600">Downloading media from Instagram</p>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-3">
+                <p class="text-sm text-gray-700 break-all">${url}</p>
+            </div>
         </div>
     `;
+    
     instaUrl.value = '';
+    
+    // Scroll to result
+    setTimeout(() => {
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+});
+
+// FAQ smooth scroll
+document.querySelector('a[href="#faq"]').addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
 });
 </script>
+
+<style>
+@keyframes bounce-in {
+    0% { opacity: 0; transform: scale(0.9); }
+    50% { transform: scale(1.02); }
+    100% { opacity: 1; transform: scale(1); }
+}
+.animate-bounce-in {
+    animation: bounce-in 0.4s ease-out;
+}
+</style>
 
 </body>
 </html>

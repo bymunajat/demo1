@@ -1,240 +1,639 @@
 <!DOCTYPE html>
-<html lang="en" x-data="appData()" x-init="checkLogin()">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Instagram Downloader Admin — Demo</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="//unpkg.com/alpinejs" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySeoFan - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+    </style>
 </head>
-<body class="bg-gray-900 text-gray-200 min-h-screen">
+<body class="bg-gray-100">
 
-<!-- LOGIN SCREEN -->
-<div x-show="!isLoggedIn" class="flex items-center justify-center h-screen">
-  <div class="bg-gray-800 p-8 rounded-xl w-full max-w-md shadow">
-    <h1 class="text-2xl font-bold text-green-500 text-center">Admin Login (Demo)</h1>
-    <p class="text-gray-400 text-sm text-center mt-2">Use demo credentials</p>
-    <div class="mt-6 space-y-4">
-      <input type="email" placeholder="Email" x-model="loginEmail" class="w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 text-gray-200">
-      <input type="password" placeholder="Password" x-model="loginPassword" class="w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 text-gray-200">
-      <button @click="login()" class="w-full bg-green-600 hover:bg-green-500 py-2 rounded font-semibold">Sign In</button>
-      <p class="text-sm text-gray-400 text-center">Demo: admin@example.com / admin123</p>
-      <p x-text="loginError" class="text-red-500 text-sm text-center"></p>
+<!-- Login Page -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-purple-700">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Admin Panel</h1>
+            <p class="text-gray-600">MySeoFan Management System</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2">Username</label>
+                <input type="text" id="username" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 outline-none" placeholder="Enter username" required>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 font-semibold mb-2">Password</label>
+                <input type="password" id="password" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 outline-none" placeholder="Enter password" required>
+            </div>
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3 rounded-lg font-bold hover:shadow-lg transition">
+                Login
+            </button>
+            
+            <p class="text-sm text-gray-500 mt-4 text-center">Default: admin / admin123</p>
+        </form>
     </div>
-  </div>
 </div>
 
-<!-- DASHBOARD -->
-<div x-show="isLoggedIn" class="flex min-h-screen">
+<!-- Admin Dashboard -->
+<div id="adminDashboard" class="hidden">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="flex items-center justify-between px-6 py-4">
+            <h1 class="text-2xl font-bold text-gray-800">MySeoFan Admin</h1>
+            <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                Logout
+            </button>
+        </div>
+    </header>
 
-  <!-- SIDEBAR -->
-  <aside class="w-64 bg-gray-800 border-r border-gray-700 hidden md:block">
-    <div class="p-6 text-2xl font-bold text-green-500">Admin Panel</div>
-    <nav class="px-4 space-y-2 text-sm">
-        <button @click="tab='dashboard'" :class="tab==='dashboard'?'bg-gray-700':'hover:bg-gray-700'" class="w-full text-left px-4 py-2 rounded">Dashboard</button>
-        <button @click="tab='downloads'" :class="tab==='downloads'?'bg-gray-700':'hover:bg-gray-700'" class="w-full text-left px-4 py-2 rounded">Downloads</button>
-        <button @click="tab='api'" :class="tab==='api'?'bg-gray-700':'hover:bg-gray-700'" class="w-full text-left px-4 py-2 rounded">API Status</button>
-        <button @click="tab='logs'" :class="tab==='logs'?'bg-gray-700':'hover:bg-gray-700'" class="w-full text-left px-4 py-2 rounded">Logs</button>
-        <button @click="tab='users'" :class="tab==='users'?'bg-gray-700':'hover:bg-gray-700'" class="w-full text-left px-4 py-2 rounded">Users</button>
-        <button @click="tab='ads_code'" :class="tab==='ads_code'?'bg-gray-700':'hover:bg-gray-700'" class="w-full text-left px-4 py-2 rounded">Ads Code</button>
-        <button @click="logout()" class="block px-4 py-2 rounded text-red-500 hover:text-red-400 mt-4">Logout</button>
-    </nav>
-  </aside>
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white h-screen shadow-lg overflow-y-auto">
+            <nav class="p-4">
+                <a href="#" class="sidebar-link sidebar-active block px-4 py-3 rounded-lg mb-2" data-section="dashboard">
+                    📊 Dashboard
+                </a>
+                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="settings">
+                    ⚙️ Website Settings
+                </a>
+                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="seo">
+                    🔍 SEO Settings
+                </a>
+                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="pages">
+                    📄 Page Management
+                </a>
+                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="blog">
+                    📝 Blog Posts
+                </a>
+                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="redirects">
+                    🔗 Redirects
+                </a>
+                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="languages">
+                    🌐 Languages
+                </a>
+            </nav>
+        </aside>
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 p-6">
+        <!-- Main Content -->
+        <main class="flex-1 p-8 overflow-y-auto h-screen">
+            
+            <!-- Dashboard Section -->
+            <section id="section-dashboard" class="content-section">
+                <h2 class="text-3xl font-bold mb-6">Dashboard</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Total Pages</p>
+                                <h3 class="text-3xl font-bold text-gray-800">7</h3>
+                            </div>
+                            <div class="text-4xl">📄</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Blog Posts</p>
+                                <h3 class="text-3xl font-bold text-gray-800">0</h3>
+                            </div>
+                            <div class="text-4xl">📝</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Languages</p>
+                                <h3 class="text-3xl font-bold text-gray-800">7</h3>
+                            </div>
+                            <div class="text-4xl">🌐</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Redirects</p>
+                                <h3 class="text-3xl font-bold text-gray-800">0</h3>
+                            </div>
+                            <div class="text-4xl">🔗</div>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- HEADER -->
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold" x-text="tab.charAt(0).toUpperCase() + tab.slice(1)"></h1>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-xl font-bold mb-4">Quick Actions</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <button onclick="showSection('settings')" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg">
+                            Website Settings
+                        </button>
+                        <button onclick="showSection('seo')" class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg">
+                            SEO Settings
+                        </button>
+                        <button onclick="showSection('pages')" class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg">
+                            Manage Pages
+                        </button>
+                        <button onclick="showSection('blog')" class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg">
+                            Add Blog Post
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Website Settings Section -->
+            <section id="section-settings" class="content-section hidden">
+                <h2 class="text-3xl font-bold mb-6">Website Settings</h2>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4">Branding</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Website Name</label>
+                            <input type="text" id="siteName" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="MySeoFan">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Website Tagline</label>
+                            <input type="text" id="siteTagline" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Download Instagram Content">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4">Logo & Favicon</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Logo Upload</label>
+                            <input type="file" id="logoUpload" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" accept="image/*">
+                            <p class="text-sm text-gray-500 mt-2">Recommended: 200x50px PNG</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Favicon Upload</label>
+                            <input type="file" id="faviconUpload" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" accept="image/*">
+                            <p class="text-sm text-gray-500 mt-2">Recommended: 32x32px ICO/PNG</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4">Header Settings</h3>
+                    <label class="block text-gray-700 font-semibold mb-2">Custom Header Code (HTML/CSS/JS)</label>
+                    <textarea id="headerCode" rows="5" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg font-mono text-sm" placeholder="<!-- Add custom code here -->"></textarea>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4">Footer Settings</h3>
+                    <label class="block text-gray-700 font-semibold mb-2">Custom Footer Code (HTML/CSS/JS)</label>
+                    <textarea id="footerCode" rows="5" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg font-mono text-sm" placeholder="<!-- Add custom code here -->"></textarea>
+                </div>
+
+                <button onclick="saveSettings()" class="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-8 py-3 rounded-lg font-bold hover:shadow-lg">
+                    Save Settings
+                </button>
+            </section>
+
+            <!-- SEO Settings Section -->
+            <section id="section-seo" class="content-section hidden">
+                <h2 class="text-3xl font-bold mb-6">SEO Settings</h2>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4">Homepage SEO</h3>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">Meta Title</label>
+                        <input type="text" id="homeMetaTitle" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="MySeoFan - Download Instagram Content">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">Meta Description</label>
+                        <textarea id="homeMetaDesc" rows="3" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Download Instagram videos, photos, reels & IGTV instantly..."></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">Meta Keywords</label>
+                        <input type="text" id="homeMetaKeywords" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="instagram downloader, download ig video, instagram saver">
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4">Open Graph Tags (OG Tags)</h3>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">OG Title</label>
+                        <input type="text" id="ogTitle" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="MySeoFan - Instagram Downloader">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">OG Description</label>
+                        <textarea id="ogDesc" rows="2" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg"></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">OG Image URL</label>
+                        <input type="text" id="ogImage" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="https://myseofan.com/og-image.jpg">
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4">Schema Markup</h3>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">Organization Name</label>
+                        <input type="text" id="schemaOrgName" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="MySeoFan">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">Website Type</label>
+                        <select id="schemaType" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg">
+                            <option value="WebApplication">Web Application</option>
+                            <option value="WebSite">Website</option>
+                            <option value="SoftwareApplication">Software Application</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="saveSEO()" class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-8 py-3 rounded-lg font-bold hover:shadow-lg">
+                    Save SEO Settings
+                </button>
+            </section>
+
+            <!-- Page Management Section -->
+            <section id="section-pages" class="content-section hidden">
+                <h2 class="text-3xl font-bold mb-6">Page Management</h2>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Default Pages (7)</h3>
+                        <button onclick="createNewPage()" class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-2 rounded-lg font-semibold">
+                            + Create New Page
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4" id="pagesList">
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500 cursor-pointer" onclick="editPage('video')">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg">🎥 Video Download Page</h4>
+                                    <p class="text-sm text-gray-500">/video-download</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit →</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500 cursor-pointer" onclick="editPage('photo')">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg">📷 Photo Download Page</h4>
+                                    <p class="text-sm text-gray-500">/photo-download</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit →</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500 cursor-pointer" onclick="editPage('reels')">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg">🎬 Reels Download Page</h4>
+                                    <p class="text-sm text-gray-500">/reels-download</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit →</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500 cursor-pointer" onclick="editPage('story')">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg">📱 Story Download Page</h4>
+                                    <p class="text-sm text-gray-500">/story-download</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit →</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500 cursor-pointer" onclick="editPage('igtv')">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg">📺 IGTV Download Page</h4>
+                                    <p class="text-sm text-gray-500">/igtv-download</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit →</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500 cursor-pointer" onclick="editPage('carousel')">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg">🎠 Carousel Download Page</h4>
+                                    <p class="text-sm text-gray-500">/carousel-download</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit →</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500 cursor-pointer" onclick="editPage('privacy')">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg">🔒 Privacy Policy</h4>
+                                    <p class="text-sm text-gray-500">/privacy-policy</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Blog Section -->
+            <section id="section-blog" class="content-section hidden">
+                <h2 class="text-3xl font-bold mb-6">Blog Posts</h2>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">All Posts</h3>
+                        <button onclick="createBlogPost()" class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-2 rounded-lg font-semibold">
+                            + New Post
+                        </button>
+                    </div>
+                    
+                    <div id="blogPostsList" class="text-center text-gray-500 py-8">
+                        No blog posts yet. Create your first post!
+                    </div>
+                </div>
+            </section>
+
+            <!-- Redirects Section -->
+            <section id="section-redirects" class="content-section hidden">
+                <h2 class="text-3xl font-bold mb-6">Redirect Management</h2>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Active Redirects</h3>
+                        <button onclick="addRedirect()" class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-lg font-semibold">
+                            + Add Redirect
+                        </button>
+                    </div>
+                    
+                    <div id="redirectsList">
+                        <div class="border-2 border-gray-200 rounded-lg p-4 mb-4">
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <div>
+                                    <p class="text-sm text-gray-500">From:</p>
+                                    <p class="font-semibold">/</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">To:</p>
+                                    <p class="font-semibold">/en</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">301</span>
+                                    <button class="ml-2 text-red-500 hover:text-red-700">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Languages Section -->
+            <section id="section-languages" class="content-section hidden">
+                <h2 class="text-3xl font-bold mb-6">Language Management</h2>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4">Supported Languages (7)</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border-2 border-purple-500 rounded-lg p-4 bg-purple-50">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">🇺🇸 English (EN)</h4>
+                                    <p class="text-sm text-gray-500">Default Language</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">🇮🇩 Indonesian (ID)</h4>
+                                    <p class="text-sm text-gray-500">Bahasa Indonesia</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">🇪🇸 Spanish (ES)</h4>
+                                    <p class="text-sm text-gray-500">Español</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">🇫🇷 French (FR)</h4>
+                                    <p class="text-sm text-gray-500">Français</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">🇩🇪 German (DE)</h4>
+                                    <p class="text-sm text-gray-500">Deutsch</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">🇵🇹 Portuguese (PT)</h4>
+                                    <p class="text-sm text-gray-500">Português</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-purple-500">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">🇯🇵 Japanese (JA)</h4>
+                                    <p class="text-sm text-gray-500">日本語</p>
+                                </div>
+                                <button class="text-purple-600 font-semibold">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+                    <p class="text-blue-800">
+                        <strong>💡 Tip:</strong> When users select a language, all content including meta tags, page titles, and descriptions will automatically change to the selected language.
+                    </p>
+                </div>
+            </section>
+
+        </main>
     </div>
-
-    <!-- DASHBOARD TAB -->
-    <div x-show="tab==='dashboard'" class="space-y-10">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow">
-              <p class="text-sm text-gray-400">Total Downloads</p>
-              <p class="text-3xl font-bold mt-2" x-text="stats.totalDownloads"></p>
-          </div>
-          <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow">
-              <p class="text-sm text-gray-400">Requests Today</p>
-              <p class="text-3xl font-bold mt-2" x-text="stats.requestsToday"></p>
-          </div>
-          <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow">
-              <p class="text-sm text-gray-400">Failed Downloads</p>
-              <p class="text-3xl font-bold mt-2 text-red-400" x-text="stats.failedDownloads"></p>
-          </div>
-          <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow">
-              <p class="text-sm text-gray-400">Cobalt API</p>
-              <p class="mt-2 text-green-400 font-medium" x-text="stats.apiStatus"></p>
-          </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow">
-              <h2 class="text-lg font-semibold mb-4">Downloads Last 7 Days</h2>
-              <canvas id="lineChart" class="w-full h-60"></canvas>
-          </div>
-          <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow">
-              <h2 class="text-lg font-semibold mb-4">Download Type Distribution</h2>
-              <canvas id="pieChart" class="w-full h-60"></canvas>
-          </div>
-      </div>
-    </div>
-
-    <!-- DOWNLOADS TAB -->
-    <div x-show="tab==='downloads'" class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow mb-10">
-      <h2 class="text-lg font-semibold mb-4">Downloads</h2>
-      <table class="w-full text-sm">
-      <thead class="text-gray-400 border-b border-gray-700">
-      <tr>
-      <th class="py-2 text-left">Time</th>
-      <th class="py-2 text-left">Type</th>
-      <th class="py-2 text-left">File Name</th>
-      <th class="py-2 text-left">Status</th>
-      </tr>
-      </thead>
-      <tbody class="text-gray-300">
-      <template x-for="dl in downloads" :key="dl.id">
-      <tr class="border-b border-gray-700">
-      <td x-text="dl.time"></td>
-      <td x-text="dl.type"></td>
-      <td x-text="dl.file"></td>
-      <td :class="{'text-green-400': dl.status==='Success','text-red-400': dl.status==='Failed','text-yellow-400': dl.status==='Partial'}" x-text="dl.status"></td>
-      </tr>
-      </template>
-      </tbody>
-      </table>
-    </div>
-
-    <!-- API STATUS TAB -->
-    <div x-show="tab==='api'" class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow mb-10">
-      <h2 class="text-lg font-semibold mb-4">API Status</h2>
-      <p class="text-sm text-gray-400 mb-2">API URL: <span class="text-gray-200" x-text="api.url"></span></p>
-      <p class="text-sm text-gray-400 mb-2">Last Request: <span class="text-gray-200" x-text="api.lastRequest"></span></p>
-      <p class="text-sm text-gray-400 mb-2">Status: <span :class="{'text-green-400': api.status==='Online','text-red-400': api.status==='Offline'}" x-text="api.status"></span></p>
-      <button class="mt-4 bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded">Test API</button>
-    </div>
-
-    <!-- LOGS TAB -->
-    <div x-show="tab==='logs'" class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow mb-10">
-      <h2 class="text-lg font-semibold mb-4">Recent Logs</h2>
-      <p class="text-gray-400 text-sm mb-2">No logs yet (demo version).</p>
-      <table class="w-full text-sm">
-      <thead class="text-gray-400 border-b border-gray-700">
-      <tr>
-      <th class="py-2 text-left">Time</th>
-      <th class="py-2 text-left">Action</th>
-      <th class="py-2 text-left">User</th>
-      <th class="py-2 text-left">Status</th>
-      </tr>
-      </thead>
-      <tbody class="text-gray-300">
-      <tr>
-      <td colspan="4" class="text-center text-gray-500 py-4">No logs yet (demo version)</td>
-      </tr>
-      </tbody>
-      </table>
-    </div>
-
-    <!-- USERS TAB -->
-    <div x-show="tab==='users'" class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow mb-10">
-      <h2 class="text-lg font-semibold mb-4">Users</h2>
-      <table class="w-full text-sm">
-      <thead class="text-gray-400 border-b border-gray-700">
-      <tr>
-      <th class="py-2 text-left">ID</th>
-      <th class="py-2 text-left">Username</th>
-      <th class="py-2 text-left">Role</th>
-      <th class="py-2 text-left">Status</th>
-      </tr>
-      </thead>
-      <tbody class="text-gray-300">
-      <template x-for="user in users" :key="user.id">
-      <tr class="border-b border-gray-700">
-      <td x-text="user.id"></td>
-      <td x-text="user.username"></td>
-      <td x-text="user.role"></td>
-      <td :class="{'text-green-400': user.status==='Active','text-red-400': user.status==='Inactive'}" x-text="user.status"></td>
-      </tr>
-      </template>
-      </tbody>
-      </table>
-    </div>
-
-    <!-- ADS CODE TAB -->
-    <div x-show="tab==='ads_code'" class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow mb-10">
-      <h2 class="text-lg font-semibold mb-4">Ads Code</h2>
-      <p class="text-gray-400 mb-4">Paste your HTML / JS ad code here. It will render on dashboard/main page.</p>
-      <textarea class="w-full p-3 rounded bg-gray-700 border border-gray-600 text-gray-200" x-model="adsCode"></textarea>
-      <button class="mt-2 bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded" @click="saveAdsCode()">Save Ads Code</button>
-    </div>
-
-  </main>
 </div>
 
-<!-- ALPINE.JS DATA -->
 <script>
-function appData(){
-  return {
-    isLoggedIn:false,
-    tab:'dashboard',
-    loginEmail:'',
-    loginPassword:'',
-    loginError:'',
-    stats:{totalDownloads:1284,requestsToday:76,failedDownloads:5,apiStatus:'Connected'},
-    downloads:[{id:1,time:'10:21',type:'Video',file:'vid123.mp4',status:'Success'},{id:2,time:'10:15',type:'Image',file:'img456.jpg',status:'Success'},{id:3,time:'10:01',type:'Carousel',file:'car789.zip',status:'Partial'}],
-    users:[{id:1,username:'admin',role:'Admin',status:'Active'},{id:2,username:'moderator',role:'Moderator',status:'Active'},{id:3,username:'user1',role:'User',status:'Inactive'}],
-    api:{url:'http://localhost:9000',lastRequest:'2 minutes ago',status:'Online'},
-    adsCode:'',
-    checkLogin(){
-        this.isLoggedIn = localStorage.getItem('demoLoggedIn')==='true';
-    },
-    login(){
-        if(this.loginEmail==='admin@example.com' && this.loginPassword==='admin123'){
-            this.isLoggedIn = true;
-            localStorage.setItem('demoLoggedIn','true');
-            this.loginError='';
-        } else {
-            this.loginError='Invalid email or password';
-        }
-    },
-    logout(){
-        this.isLoggedIn=false;
-        localStorage.removeItem('demoLoggedIn');
-        this.tab='dashboard';
-    },
-    saveAdsCode(){
-        alert('Ads code saved (demo)');
-    }
-  }
+// Check if logged in
+const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+if (isLoggedIn) {
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('adminDashboard').classList.remove('hidden');
 }
-</script>
 
-<!-- CHARTS.JS -->
-<script>
-document.addEventListener('alpine:init',()=>{
-    setTimeout(()=>{
-        const lineCtx = document.getElementById('lineChart')?.getContext('2d');
-        if(lineCtx){
-            new Chart(lineCtx, {
-                type:'line',
-                data:{
-                    labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-                    datasets:[{label:'Downloads',data:[120,190,140,230,180,200,250],borderColor:'rgba(34,197,94,1)',backgroundColor:'rgba(34,197,94,0.2)',tension:0.3,fill:true}]
-                },
-                options:{responsive:true,plugins:{legend:{labels:{color:'#D1D5DB'}}},scales:{x:{ticks:{color:'#9CA3AF'},grid:{color:'#374151'}},y:{ticks:{color:'#9CA3AF'},grid:{color:'#374151'}}}}
-            });
+// Login function
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (username === 'admin' && password === 'admin123') {
+        localStorage.setItem('adminLoggedIn', 'true');
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('adminDashboard').classList.remove('hidden');
+    } else {
+        alert('Invalid credentials! Use: admin / admin123');
+    }
+});
+
+// Logout function
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('adminLoggedIn');
+        location.reload();
+    }
+}
+
+// Sidebar navigation
+document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const section = this.dataset.section;
+        showSection(section);
+    });
+});
+
+function showSection(section) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+    // Show selected section
+    document.getElementById('section-' + section).classList.remove('hidden');
+    
+    // Update sidebar active state
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.remove('sidebar-active');
+        if (link.dataset.section === section) {
+            link.classList.add('sidebar-active');
         }
-        const pieCtx = document.getElementById('pieChart')?.getContext('2d');
-        if(pieCtx){
-            new Chart(pieCtx,{
-                type:'pie',
-                data:{labels:['Image','Video','Carousel'],datasets:[{data:[500,600,184],backgroundColor:['#22c55e','#3b82f6','#facc15'],borderColor:'#1f2937',borderWidth:2}]},
-                options:{responsive:true,plugins:{legend:{labels:{color:'#D1D5DB'}}}}
-            });
+    });
+}
+
+// Save Settings
+function saveSettings() {
+    const settings = {
+        siteName: document.getElementById('siteName').value,
+        siteTagline: document.getElementById('siteTagline').value,
+        headerCode: document.getElementById('headerCode').value,
+        footerCode: document.getElementById('footerCode').value
+    };
+    
+    localStorage.setItem('websiteSettings', JSON.stringify(settings));
+    alert('✅ Settings saved successfully!');
+}
+
+// Save SEO
+function saveSEO() {
+    const seo = {
+        homeMetaTitle: document.getElementById('homeMetaTitle').value,
+        homeMetaDesc: document.getElementById('homeMetaDesc').value,
+        homeMetaKeywords: document.getElementById('homeMetaKeywords').value,
+        ogTitle: document.getElementById('ogTitle').value,
+        ogDesc: document.getElementById('ogDesc').value,
+        ogImage: document.getElementById('ogImage').value,
+        schemaOrgName: document.getElementById('schemaOrgName').value,
+        schemaType: document.getElementById('schemaType').value
+    };
+    
+    localStorage.setItem('seoSettings', JSON.stringify(seo));
+    alert('✅ SEO settings saved successfully!');
+}
+
+// Edit Page
+function editPage(pageType) {
+    alert(`Opening editor for ${pageType} page...`);
+    // This would open a rich text editor modal
+}
+
+// Create New Page
+function createNewPage() {
+    const pageName = prompt('Enter page name:');
+    if (pageName) {
+        alert(`Creating new page: ${pageName}`);
+    }
+}
+
+// Create Blog Post
+function createBlogPost() {
+    alert('Opening blog post editor...');
+}
+
+// Add Redirect
+function addRedirect() {
+    alert('Opening redirect form...');
+}
+
+// Load saved settings on page load
+window.addEventListener('load', function() {
+    const savedSettings = localStorage.getItem('websiteSettings');
+    if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        if (document.getElementById('siteName')) {
+            document.getElementById('siteName').value = settings.siteName || '';
+            document.getElementById('siteTagline').value = settings.siteTagline || '';
+            document.getElementById('headerCode').value = settings.headerCode || '';
+            document.getElementById('footerCode').value = settings.footerCode || '';
         }
-    },100);
+    }
+    
+    const savedSEO = localStorage.getItem('seoSettings');
+    if (savedSEO) {
+        const seo = JSON.parse(savedSEO);
+        if (document.getElementById('homeMetaTitle')) {
+            document.getElementById('homeMetaTitle').value = seo.homeMetaTitle || '';
+            document.getElementById('homeMetaDesc').value = seo.homeMetaDesc || '';
+            document.getElementById('homeMetaKeywords').value = seo.homeMetaKeywords || '';
+            document.getElementById('ogTitle').value = seo.ogTitle || '';
+            document.getElementById('ogDesc').value = seo.ogDesc || '';
+            document.getElementById('ogImage').value = seo.ogImage || '';
+            document.getElementById('schemaOrgName').value = seo.schemaOrgName || '';
+            document.getElementById('schemaType').value = seo.schemaType || '';
+        }
+    }
 });
 </script>
 
