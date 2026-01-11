@@ -55,32 +55,123 @@
     </header>
 
     <div class="flex">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white h-screen shadow-lg overflow-y-auto">
-            <nav class="p-4">
-                <a href="#" class="sidebar-link sidebar-active block px-4 py-3 rounded-lg mb-2" data-section="dashboard">
-                    📊 Dashboard
-                </a>
-                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="settings">
-                    ⚙️ Website Settings
-                </a>
-                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="seo">
-                    🔍 SEO Settings
-                </a>
-                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="pages">
-                    📄 Page Management
-                </a>
-                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="blog">
-                    📝 Blog Posts
-                </a>
-                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="redirects">
-                    🔗 Redirects
-                </a>
-                <a href="#" class="sidebar-link block px-4 py-3 rounded-lg mb-2 hover:bg-gray-100" data-section="languages">
-                    🌐 Languages
-                </a>
-            </nav>
-        </aside>
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white h-screen shadow-lg overflow-y-auto">
+        <nav class="p-4 space-y-1">
+
+            <!-- Dashboard -->
+            <a href="#" class="sidebar-link sidebar-active block px-4 py-3 rounded-lg" data-section="dashboard">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 3v18h16.5M8.25 15.75v-6m4.5 6V6.75m4.5 9v-3"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </div>
+            </a>
+
+            <!-- Website Settings -->
+            <a href="#" class="sidebar-link block px-4 py-3 rounded-lg hover:bg-gray-100" data-section="settings">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.094
+                                 c.55 0 1.02.398 1.11.94l.149.894
+                                 a1.125 1.125 0 001.068.916h.942
+                                 c.62 0 1.07.606.868 1.19l-.31.91
+                                 a1.125 1.125 0 00.326 1.207l.687.56
+                                 c.459.375.459 1.082 0 1.457l-.687.56
+                                 a1.125 1.125 0 00-.326 1.207l.31.91
+                                 c.203.584-.248 1.19-.868 1.19h-.942
+                                 a1.125 1.125 0 00-1.068.916l-.149.894
+                                 c-.09.542-.56.94-1.11.94h-1.094
+                                 c-.55 0-1.02-.398-1.11-.94l-.149-.894
+                                 a1.125 1.125 0 00-1.068-.916h-.942
+                                 c-.62 0-1.07-.606-.868-1.19l.31-.91
+                                 a1.125 1.125 0 00-.326-1.207l-.687-.56
+                                 c-.459-.375-.459-1.082 0-1.457l.687-.56
+                                 a1.125 1.125 0 00.326-1.207l-.31-.91
+                                 c-.203-.584.248-1.19.868-1.19h.942
+                                 a1.125 1.125 0 001.068-.916l.149-.894z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span>Website Settings</span>
+                </div>
+            </a>
+
+            <!-- SEO -->
+            <a href="#" class="sidebar-link block px-4 py-3 rounded-lg hover:bg-gray-100" data-section="seo">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M21 21l-4.35-4.35m1.85-4.4
+                                 a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"/>
+                    </svg>
+                    <span>SEO Settings</span>
+                </div>
+            </a>
+
+            <!-- Pages -->
+            <a href="#" class="sidebar-link block px-4 py-3 rounded-lg hover:bg-gray-100" data-section="pages">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M19.5 6h-15A1.5 1.5 0 003 7.5v9
+                                 A1.5 1.5 0 004.5 18h15
+                                 A1.5 1.5 0 0021 16.5v-9
+                                 A1.5 1.5 0 0019.5 6z"/>
+                    </svg>
+                    <span>Page Management</span>
+                </div>
+            </a>
+
+            <!-- Blog -->
+            <a href="#" class="sidebar-link block px-4 py-3 rounded-lg hover:bg-gray-100" data-section="blog">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M8.25 6.75h7.5M8.25 10.5h7.5
+                                 M8.25 14.25h4.5M6 3.75h12
+                                 A1.5 1.5 0 0119.5 5.25v13.5
+                                 A1.5 1.5 0 0118 20.25H6
+                                 A1.5 1.5 0 014.5 18.75V5.25
+                                 A1.5 1.5 0 016 3.75z"/>
+                    </svg>
+                    <span>Blog Posts</span>
+                </div>
+            </a>
+
+            <!-- Redirects -->
+            <a href="#" class="sidebar-link block px-4 py-3 rounded-lg hover:bg-gray-100" data-section="redirects">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M16.5 9.75l3 3m0 0l-3 3m3-3H3"/>
+                    </svg>
+                    <span>Redirects</span>
+                </div>
+            </a>
+
+            <!-- Languages -->
+            <a href="#" class="sidebar-link block px-4 py-3 rounded-lg hover:bg-gray-100" data-section="languages">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 3.75c4.556 0 8.25 3.694 8.25 8.25
+                                 S16.556 20.25 12 20.25
+                                 3.75 16.556 3.75 12
+                                 7.444 3.75 12 3.75z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 12h16.5"/>
+                    </svg>
+                    <span>Languages</span>
+                </div>
+            </a>
+
+        </nav>
+    </aside>
+
 
         <!-- Main Content -->
         <main class="flex-1 p-8 overflow-y-auto h-screen">
